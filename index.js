@@ -20,14 +20,11 @@ dotenv.config();
 const Login = require("./routes/auth");
 const New = require("./routes/auth/new");
 const updateUser = require("./routes/user/update");
-const NewPost = require("./routes/post");
-
 const port = process.env.PORT || 4000;
 
 //routes
 app.use("/auth/", Login);
 app.use("/auth/new", New);
 app.use("/user/update", updateUser);
-app.use("/post/new", NewPost);
 
 app.listen(port, () => console.log("servidor esta ligado"));
