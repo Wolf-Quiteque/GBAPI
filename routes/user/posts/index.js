@@ -22,17 +22,17 @@ router.post("/all", async (req, res) => {
   try {
     const cliente = await clientPromise;
     const db = cliente.db("GBUSINESS");
-   const user = await db
-      .collection("posts")
-      .aggregate([
-        {telefone:req.body.telefone}, // Unwind the "posts" array
-            { $sort: { "date": -1 } }, // Sort posts by date in descending order
-            { $limit: 5 } // Limit the number of posts to 5
-           
-          ])
-      );
+    const user = await db
+    .collection("posts")
+    .aggregate([
+      { $sort: { date: -1 } }, // Sort posts by date in descending order
+      { $limit: 5 }, // Limit the number of posts to 5
+      { $match: { telefone: req.body.telefone } } // Filter posts by the specified telefone
+    ])
+    .toArray();
+  
 
-    res.status(200).json(user.posts);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(false);
   }
