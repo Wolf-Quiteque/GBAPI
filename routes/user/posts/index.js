@@ -41,19 +41,12 @@ router.post("/alls", async (req, res) => {
         const db = cliente.db("GBUSINESS");
     
         const allPosts = await db
-        .collection("usuarios")
-        .aggregate([
-          { $unwind: "$posts" }, // Unwind the "posts" array
-          { $sort: { "posts.date": -1 } }, // Sort posts by date in descending order
-          { $limit: 5 }, // Limit the number of posts to 5
-          {
-            $project: {
-              _id: 0, // Exclude the _id field
-              posts: 1 // Include only the posts field
-            }
-          }
-        ])
-        .toArray();
+          .collection("posts")
+          .aggregate([ // Unwind the "posts" array
+            { $sort: { "date": -1 } }, // Sort posts by date in descending order
+            { $limit: 5 } // Limit the number of posts to 5
+          ])
+          .toArray();
     
         res.status(200).json(allPosts);
       } catch (err) {

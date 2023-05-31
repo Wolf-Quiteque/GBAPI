@@ -22,10 +22,9 @@ router.post("/post", async (req, res) => {
     const cliente = await clientPromise;
     const db = cliente.db("GBUSINESS");
     await db
-      .collection("usuarios")
-      .updateOne(
-        { telefone: req.body.telefone },
-        { $push: { posts: req.body } }
+      .collection("posts")
+      .insertOne(
+        { req.body }
       );
 
     res.status(200).json("true");
