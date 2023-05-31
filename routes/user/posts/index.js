@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const clientPromise = require("../../../db/conexao");
 
-const { hashPassword } = require("../../lib/auth");
+const { hashPassword } = require("../../../lib/auth");
 
 router.post("/", async (req, res) => {
   try {
