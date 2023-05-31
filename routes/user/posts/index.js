@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/all", async (req, res) => {
+
   try {
     const cliente = await clientPromise;
     const db = cliente.db("GBUSINESS");
@@ -33,4 +34,25 @@ router.post("/all", async (req, res) => {
   }
 });
 
+router.post("/alls", async (req, res) => {
+
+    try {
+        const cliente = await clientPromise;
+        const db = cliente.db("GBUSINESS");
+    
+        const allPosts = await db
+          .collection("usuarios")
+          .aggregate([
+            { $unwind: "$posts" }, // Unwind the "posts" array
+            { $sort: { "posts.date": -1 } }, // Sort posts by date in descending order
+            { $limit: 5 } // Limit the number of posts to 5
+          ])
+          .toArray();
+    
+        res.status(200).json(allPosts);
+      } catch (err) {
+        res.status(500).json(false);
+      }
+  
+  });
 module.exports = router;
