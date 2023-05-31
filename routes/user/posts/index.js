@@ -23,9 +23,13 @@ router.post("/all", async (req, res) => {
     const cliente = await clientPromise;
     const db = cliente.db("GBUSINESS");
    const user = await db
-      .collection("usuarios")
-      .findOne(
-        { telefone: req.body.telefone }
+      .collection("posts")
+      .aggregate([
+        {telefone:req.body.telefone}, // Unwind the "posts" array
+            { $sort: { "date": -1 } }, // Sort posts by date in descending order
+            { $limit: 5 } // Limit the number of posts to 5
+           
+          ])
       );
 
     res.status(200).json(user.posts);
